@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Brouze | Your Profile</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/profile-page.css" rel="stylesheet">
+
+
+
+    <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>-->
+    <script language="JavaScript" type="text/javascript" src="cryptico-master/random.js"></script>
+    <script language="JavaScript" type="text/javascript" src="cryptico-master/hash.js"></script>
+    <script language="JavaScript" type="text/javascript" src="cryptico-master/rsa.js"></script>
+    <script language="JavaScript" type="text/javascript" src="cryptico-master/aes.js"></script>
+    <script language="JavaScript" type="text/javascript" src="cryptico-master/api.js"></script>
+    <script language="JavaScript" type="text/javascript" src="cryptico-master/jsbn.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body onload="parseQueryString()">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="navbar-brand">Brouze</p>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <form class="navbar-form" role="form">
+                        <div class="input-group">
+                            <div class="form-group">
+                                <!--<input type="text" class="form-control" id="srch-term" placeholder="Search Brouze">-->
+                                <select class="form-control" id="subject">
+                                    <option>Search Brouze</option>
+                                    <option>Search All Tutors</option>
+                                    <option>English</option>
+                                    <option>History</option>
+                                    <option>Spanish</option>
+                                    <option>AP Spanish</option>
+                                    <option>French</option>
+                                    <option>AP French</option>
+                                    <option>AP Computer Science</option>
+                                    <option>Computer Science</option>
+                                    <option>Pre-Algebra</option>
+                                    <option>Algebra</option>
+                                    <option>Algebra 2</option>
+                                    <option>Geometry</option>
+                                    <option>Trigonometry</option>
+                                    <option>Precalculus</option>
+                                    <option>AP Calculus AB</option>
+                                    <option>AP Calculus BC</option>
+                                    <option>Statistics</option>
+                                    <option>Rhetoric</option>
+                                    <option>AP English Literature</option>
+                                    <option>AP English Language</option>
+                                    <option>AP European History</option>
+                                    <option>AP United States History</option>
+                                    <option>Biology</option>
+                                    <option>AP Biology</option>
+                                    <option>Chemistry</option>
+                                    <option>Chemistry Honors</option>
+                                    <option>AP Chemistry</option>
+                                    <option>AP Environmental Science</option>
+                                    <option>Physics</option>
+                                    <option>AP Physics</option>
+                                    <option>SAT</option>
+                                    <option>ACT</option>
+                                </select>
+
+                            </div>
+                            <div class="input-group-btn">
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li class="dropdown-submenu">
+                                        <a tabindex="-1" href="#">Subject</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="">Subject</a></li>
+                                            <li><a href="">Subject</a></li>
+                                            <li><a href="">Subject</a></li>
+                                            <li><a href="">Subject</a></li>
+                                            <li><a href="">Subject</a></li>
+                                            <li><a href="">Subject</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="">Tutor Name</a></li>
+                                </ul>
+                                <button class="btn btn-default" type="button" onclick="sendWord()"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                            <!-- /btn-group -->
+                        </div>
+                        <!-- /input-group -->
+                        <!--<button class="btn btn-default" type="button" onclick="getWord()"><i class="glyphicon glyphicon-search"></i></button>-->
+                    </form>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a onclick="helpRedirect()">Help</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    <li class="dropdown">
+                        <a id="dropMenu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi Buttface  <span class="caret" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a onclick="home()">Profile</a></li>
+                            <li><a onclick="saveRedirect()">Saved Tutors</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a onclick="signOut()">Sign Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+
+
+
+    <!--Content-->
+    <div id="title" class="container">
+        <div class="row buttons">
+            <button class="btn btn-warning btn-large" id="fave" onclick="pushFave(this)"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>Add to Favorites</button>
+            <a onclick="redirectThree()" class="btn btn-warning btn-large" id="editProfile"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Edit Profile</a>
+        </div>
+        <div class="row" id="headInfo">
+            <div class="col-md-5"> <img class="img-responsive" id="profileImage" onclick="imageEdit()" src="http://www.imran.com/xyper_images/icon-user-default.png"></div>
+            <div id="basicInfo" class="col-md-7">
+                <h1 id="name">Buttface McGee</h1>
+                <h2 id="username"></h2>
+                <h2 id="school">Saratoga High School</h2>
+                <h2 id="zip">Zipcode: 95070</h2>
+                <h2 id="age">Age: 17</h2>
+                <h2 id="grade">Grade: 12</h2>
+                <h2 id="phone"></h2>
+                <h2 id="email"></h2>
+                <h2 id="prefLoc">Preferred tutoring location:</h2>
+            </div>
+
+        </div>
+
+        <div class="row" id="bio">
+            <hr>
+            <p id="desc">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
+                <p>
+                    <hr>
+        </div>
+        <div class="row" id="skills">
+            <div class="row" id="canTutor">
+                <div id="canTutorHeader">
+                    <div class="col-xs-6 col-md-6">
+                        <h2>Can Tutor:</h2>
+                    </div>
+                    <div class="col-xs-6 col-md-6 canTutorButton">
+
+                        <a onclick="redirect()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div id="tutorTable" class="table-responsive">
+                <table class="table" id="canTutorTable">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Teacher</th>
+                            <th>Year Taken</th>
+                            <th>Grade/Score</th>
+                            <th>AP/SAT/ACT</th>
+                            <th>$/hour</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="row" id="needsHelp">
+            <div class="row" id="canTutor">
+                <div id="canTutorHeader">
+                    <div class="col-xs-6 col-md-6">
+                        <h2>Needs Help In:</h2>
+                    </div>
+                    <div class="col-xs-6 col-md-6 canTutorButton">
+
+                        <a onclick="redirectTwo()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div id="tutorTable" class="table-responsive">
+                <table class="table" id="cantTutorTable">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Teacher</th>
+                            <th>Current Grade</th>
+                            <th>Comments</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="foot">
+        <h5>Copyright 2015 - YAAAS Labs</h5>
+    </div>
+
+
+
+    <script>
+        var data;
+        var profileOwner;
+        var pageViewer;
+        var match = true;
+        var profileViewer;
+        var favorite;
+        var editMode = false;
+        var mode = 0;
+        var rowData = 0;
+        var rowDataTwo = 0;
+        var changes = false;
+        var tempContent;
+        var tempSub;//temporary subject
+        var tempBit;//temporary sub subject like price or teacher. 
+        //console.log("encrypted four: " + encrypted);
+        
+        /*function parseQueryString(){
+            data = GetUrlValue("username_a");
+            console.log(data);
+            profileOwner = GetUrlValue("username_b");
+            console.log(profileOwner);
+            accessInfo(data);
+                               
+        }*/
+        var parseQueryString = function() {
+
+            var queryString = window.location.search;
+            queryString = queryString.substring(1);
+            queryString = atob(queryString);
+            var params = {},
+                queries, temp, i, l;
+            // Split into key/value pairs
+            queries = queryString.split("&");
+            // Convert the array of strings into an object
+            for (i = 0, l = queries.length; i < l; i++) {
+                temp = queries[i].split('=');
+                params[temp[0]] = temp[1];
+            }
+            console.log("dude 73");
+            data = params["username"];
+            profileOwner=params["username"];
+            console.log(params["username"]);
+            pageViewer = params["pageOwner"];
+            if (pageViewer != data) {
+
+                console.log("the user is not the viewer");
+                //$(".canTutorButton").hide();
+
+                match = false;
+                $(".canTutorButton").hide();
+
+
+
+            }
+            accessInfo(params["username"]);
+            console.log("page Owner " + params["pageOwner"]);
+            
+
+        };
+
+
+
+        function GetUrlValue(VarSearch) {
+            var SearchString = window.location.search.substring(1);
+            var VariableArray = SearchString.split('&');
+            for (var i = 0; i < VariableArray.length; i++) {
+                var KeyValuePair = VariableArray[i].split('=');
+                if (KeyValuePair[0] == VarSearch) {
+                    return KeyValuePair[1];
+                }
+            }
+        }
+
+        function accessInfo(info) {
+            console.log("what is the info");
+            console.log(info);
+            // Get a reference to our users
+            var ref = new Firebase("https://brouze.firebaseio.com/users/" + info + "/basicInfo");
+            ref.on("value", function(snapshot) {
+                var currentUser = snapshot.val();
+                console.log(currentUser);
+                console.log(currentUser.username);
+                console.log(currentUser.name);
+                var lib = currentUser.loc1;
+                var house = currentUser.loc2;
+                var online = currentUser.loc3;
+                var other = currentUser.loc4;
+                if(lib != false){
+                    $("#prefLoc").append(" Library. ");
+                }
+                if(house != false){
+                    $("#prefLoc").append(" At home. ");
+                }
+                if(online != false){
+                    $("#prefLoc").append(" Online. ");
+                }
+                if(other != ''){
+                    $("#prefLoc").append(other+".");
+                }
+                //createDiv(currentUser.name);
+                //createImg(currentUser.profilepic);
+                //createDiv(currentUser.name);
+                //document.write("hello " + currentUser.username);'
+                //createH1(currentUser.name);
+                // name school zip age grade
+                //time to decorate!
+                $("#profileImage").attr('src', currentUser.profilepic);
+                $("#username").text("Username: "+currentUser.username);
+                $("#name").text(currentUser.name);
+                $("#school").text("School: "+currentUser.school);
+                $("#zip").text("Zipcode: " + currentUser.zipcode);
+                $("#age").text("Age: " + currentUser.age);
+                $("#grade").text("Grade: " + currentUser.grade);
+                if(match == false){
+                    $("#dropMenu").text("Menu");
+                }
+                else{
+                    $("#dropMenu").text("Hello " + currentUser.username + "   ");
+                }
+                $("#dropMenu").append('<span class="caret" aria-hidden="true"></span>');
+                $("#desc").text(currentUser.blurb);
+                if (currentUser.email !== '') {
+                    $("#email").text("Email: " + currentUser.email);
+                }
+                if (currentUser.phone !== '') {
+                    $("#phone").text("Phone number: " + currentUser.phone);
+                }
+                
+                //if (info 
+                //need to fix/update
+                $("prefLoc").text("Tutoring location(s): " + currentUser.loc1 + currentUser.loc2 + currentUser.loc3 + currentUser.loc4);
+                addRow();
+                addRowTwo();
+                $("body").fadeIn(10);
+            }, function(errorObject) {
+                console.log("The read failed: " + errorObject.code);
+            });
+            if(!match){
+                searchFave();
+            }
+        }
+
+        function createDiv(divText) {
+            //$('#title').append('<p> hello ' + divText + '<p>');
+            $("#name").text(divText);
+        }
+
+        function createImg(url) {
+            var img = $('<img id="dynamic">'); //Equivalent: $(document.createElement('img'))
+            //img.attr('src', url);
+            //img.attr('shape',"circle");
+            img.appendTo('body');
+            $('body').append('<h1> hello ' + divText + '<p>');
+        }
+
+        function redirect() {
+            console.log("xox redirect");
+            secret = "username=" +data;
+            secret = btoa(secret);
+            window.location.href="form-two.html?"+ secret;
+        }
+
+        function redirectTwo() {
+            console.log("xox redirect");
+            secret = "username=" +data;
+            secret = btoa(secret);
+            window.location.href="form-three.html?" + secret;
+        }
+
+        function redirectThree() {
+            console.log("xox redirect");
+            secret = "username=" +data;
+            secret = btoa(secret);
+            window.location.href="editbasicinfo.html?" + secret;
+        }
+
+        function addRow() {
+            var i;
+            console.log("Attempting to append");
+            //$('#canTutorTable tr:last').after('<tr><td>hello</td><td>world</td></tr>');
+            var skillsRef = new Firebase("https://brouze.firebaseio.com/users/" + data + "/skills"); //we are looking at the skills of the specific user
+            skillsRef.once("value", function(snapshot) {
+                // The callback function will get once for each class
+                snapshot.forEach(function(childSnapshot) {
+                    rowData++;//number of skills
+                    // key will be the name of the class they are taking 
+                    var key = childSnapshot.key();
+                    var betterKey = key.replace(/ /g, "%20")
+                    //console.log("there is a better key " + betterKey);
+                    // childData will be the actual contents of the child
+                    var childData = childSnapshot.val();
+                    //var category= childData.category;
+                    var price = childData.pay;
+                    var teacher = childData.teacher;
+                    var yearTaken = childData.year;
+                    var comments = childData.comment;
+                    var grade = childData.grade;
+                    var AP = childData.AP;
+                    if(AP == ''){
+                       AP = 'NA';
+                    }
+                    var SAT = childData.SAT;
+                    if(SAT == ''){
+                       SAT = 'NA';
+                    }
+                    var ACT = childData.ACT;
+                    if(ACT == ''){
+                       ACT = 'NA';
+                    }
+                    $('#canTutorTable tr:last').after('<tr id='+betterKey+'><td id=key>' + key + '</td><td id=teacher>' + teacher + '</td><td id=year>' + yearTaken + '</td><td id=grade>' + grade + '</td><td id=AP>' + AP +"/"+SAT+"/" +ACT+'</td><td id=pay>$' + price + '</td><td id= comment>' + comments + '</td><td></tr>');
+                    if (match) {
+                       $('#canTutorTable td:last').after('<td id=penButton><a onclick="alertFunc(this)" id="' + key + '"><span class="glyphicon glyphicon-pencil deleteButton" aria-hidden="true"></span></a></td>'); 
+                       $('#canTutorTable td:last').after('<td id=trashButton><a onclick="deleteStrength(this)" id="' + key + '"><span class="glyphicon glyphicon-trash deleteButton" aria-hidden="true"></span></a></td>');
+                    }
+                    /*$("#"+key).click(function(){
+                        console.log("key what's up ");
+                           // window.document.location = $(this).data("href");
+                    });*/
+                    /*$("#canTutorTable").on('click', '#'+key, function(){
+                            var status = $(this).attr('id');
+                            console.log(status);
+                            //console.log(miniKey);
+                            //console.log(miniKey.ID);
+                             //window.location.replace("profile.html?" + "username=" + miniKey + "&pageOwner="+userData);
+                    });*/
+                });
+
+            });
+
+
+            if (match === false) {
+                console.log("fight me son");
+                $("#editProfile").hide();
+            } else {
+                $("#fave").hide();
+                $("#unfave").hide();
+            }
+        }
+
+        function addRowTwo() {
+            console.log("Attempting to append");
+            //$('#canTutorTable tr:last').after('<tr><td>hello</td><td>world</td></tr>');
+            var weakRef = new Firebase("https://brouze.firebaseio.com/users/" + data + "/weaknesses"); //we are looking at the skills of the specific user
+            weakRef.once("value", function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var key = childSnapshot.key();
+                    rowDataTwo++;
+                    var childData = childSnapshot.val();
+                    var teacher = childData.teacher;
+                    var comments = childData.blurb;
+                    var grade = childData.grade;
+                    console.log(key);
+                    console.log(teacher);
+                    console.log(comments);
+                    console.log(grade);
+                    var betterKey = key.replace(/ /g, "%20")
+                    //console.log(key);
+                    $('#cantTutorTable tr:last').after('<tr id='+betterKey+'><td id=key>' + key + '</td><td id=teacher>' + teacher + '</td><td id=grade>' + grade + '</td><td id=blurb>' + comments + '</td><td></tr>');
+                    if (match) {
+                        $('#cantTutorTable td:last').after('<td id=penButton><a onclick="alertFuncTwo(this)" id="' + key + '"><span class="glyphicon glyphicon-pencil deleteButton" aria-hidden="true"></span></a></td>'); 
+                        $('#cantTutorTable td:last').after('<td id=trashButton><a onclick="deleteWeakness(this)"id="' + key + '"><span class="glyphicon glyphicon-trash deleteButton" aria-hidden="true"></span></a></td>');
+                        
+
+                    }
+
+                });
+            });
+        }
+
+        /*$('td a').on('click', function() {
+            console.log("I got clicked");
+        });*/
+        
+        
+        function deleteWeakness(obj){
+           
+            console.log(obj);
+            var deleted = $(obj).attr('id');
+            console.log(deleted);
+            var tempRef = new Firebase("https://brouze.firebaseio.com/users/"+data+"/weaknesses/"+deleted);
+            tempRef.remove();
+            //window.location.replace("profile.html?" + "username=" + pageViewer + "&pageOwner=" + pageViewer);
+            home();
+// All data at the database location for user 'fred' has been deleted
+// (including any child data)
+            // delete from weaknesses here
+            
+            
+        }
+        
+        function deleteStrength(obj){
+             
+            console.log(obj);
+            var deleted = $(obj).attr('id');
+            console.log(deleted);
+            var tempRef = new Firebase("https://brouze.firebaseio.com/users/"+data+"/skills/"+deleted);
+            tempRef.remove();
+            //window.location.replace("profile.html?" + "username=" + pageViewer + "&pageOwner=" + pageViewer);
+            home();
+            //delete from strengths here
+        }
+        function alertFunc(obj){
+            //$('#penButton').addClass('rowEditing');
+            //console.log(obj);
+            if((mode == 0)||(editMode==false)){//if we are not already editing the other table
+            mode = 0;
+            var last = tempSub;//what was the last row we were editing?
+            var editRow = $(obj).attr('id');//this is the row we just clicked
+            console.log("bro "+mode);
+            console.log("bro look "+editRow);
+            //$('#'+editRow).addClass("rowEditing");
+            //console.log(editRow);
+            //$("#"+editRow).css('background-color', '#FFCCFF');;
+
+            tempSub=editRow;//this is what we are looking at now world
+            //console.log("bro "+editMode);
+            //console.log("check it "+editRow);
+            //console.log("yeah but "+last);
+            if((editMode == true)&&(last != editRow)){//if we are still editing and we didnt double click
+                editRow = true;//if we are switching functions
+                
+            }
+            else{
+            editMode =! editMode;
+            if(editMode == true){
+                $("#canTutorTable tr ").css('background-color', '#000000');
+                $("#canTutorTable tr ").css('color', '#FFFFFF');
+            }
+            else{
+                $("#canTutorTable tr ").css('background-color', '#FFFFFF');
+                $("#canTutorTable tr ").css('color', '#000000');
+            }
+            }
+        }
+        }
+        function alertFuncTwo(obj){
+            if((mode==1)||(editMode==false)){
+            mode = 1;
+            var last = tempSub;
+            //$('#penButton').addClass('rowEditing');
+            //console.log(obj);
+           
+            var editRow = $(obj).attr('id');
+            tempSub=editRow;
+            //$('#'+editRow).addClass("rowEditing");
+            //console.log(editRow);
+            //$("#"+editRow).css('background-color', '#FFCCFF');;
+            //console.log("xox1 "+editRow);
+            if((editMode == true)&&(last != editRow)){
+                editMode = true;
+            }
+            else{
+            editMode =! editMode;
+            if(editMode == true){
+                $("#cantTutorTable tr ").css('background-color', '#000000');
+                $("#cantTutorTable tr ").css('color', '#FFFFFF');
+            }
+            else{
+                $("#cantTutorTable tr ").css('background-color', '#FFFFFF');
+                $("#cantTutorTable tr ").css('color', '#000000');
+            }
+            }
+            }
+        }
+        function signOut() {
+            var outRef = new Firebase("https://brouze.firebaseio.com");
+            outRef.unauth();
+            window.location.replace("index.html");
+
+        }
+
+        function sendWord() {
+            var keyWord = $("#subject").val();
+            //var message = "username=" + pageViewer + "&word=" + keyWord;
+            //console.log("xox "+message);
+            //var encrypted = CryptoJS.AES.encrypt(message, "mingo");
+            //console.log("xox 2"+ encrypted);
+            //var decrypted = CryptoJS.AES.decrypt(encrypted,"mingo").toString(CryptoJS.enc.Utf8);
+            //console.log("xox 3"+decrypted);
+            
+            var destination = "username=" + pageViewer + "&word=" + keyWord;
+            var secret = btoa(destination);
+            console.log(secret);
+            //var unsecret = atob(secret);
+            //console.log(unsecret);
+            //window.location.replace("search.html?" + "username=" + pageViewer + "&word=" + keyWord);
+            window.location.href="search.html?" + secret;
+        }
+
+        function home() {
+            var secret = "username=" + pageViewer + "&pageOwner=" + pageViewer;
+            secret = btoa(secret);
+            window.location.href="profile.html?" + secret;
+        }
+
+        function imageEdit() {
+            if (match == true) {
+                var person = prompt("Please enter a new image URL", "paste URL here");
+                if (person != null) {
+                    var basicRef = new Firebase("https://brouze.firebaseio.com/users/" + data + "/basicInfo");
+                    basicRef.update({
+                        "profilepic": person
+                    });
+                    home();
+                }
+            }
+        }
+        function pushFave(obj){
+     
+            if($(obj).attr("id") === "fave"){
+               
+                   var newRef = new Firebase("https://brouze.firebaseio.com/users/" + pageViewer);
+            //var classRef = usernameRef.child("skills");
+            newRef.child("faves").child(data).set({
+                faveKey:data
+            });
+                $("#fave").text("");
+                $("#fave").text("Remove from Favorites");
+                $("#fave").attr("id", "unfave");
+                
+            }
+            else {
+       
+                popFave();
+                $("#unfave").text("");
+                $("#unfave").append('<span class="glyphicon glyphicon-star" aria-hidden="true"></span>Add to Favorites');
+                $("#unfave").attr("id", "fave");
+            }
+         
+            
+            
+        }
+        function popFave(){
+            var endRef = new Firebase("https://brouze.firebaseio.com/users/" + pageViewer+"/faves/"+data);
+            endRef.remove();
+        }
+        function saveRedirect(){
+            var secret = "username=" + pageViewer + "&pageOwner=" + pageViewer;
+            secret = btoa(secret);
+            window.location.href="savedtutors.html?" + secret;
+        }
+        function helpRedirect(){
+            var PassPhrase = "The Moon is a Harsh Mistress."; 
+            // The length of the RSA key, in bits.
+            var Bits = 1024; 
+            var MattsRSAkey = cryptico.generateRSAKey(PassPhrase, Bits);//generate RSAkey (non random I think)
+            //console.log("this is the RSA key: "+MattsRSAkey);
+            var MattsPublicKeyString = cryptico.publicKeyString(MattsRSAkey); //generate public key (random)
+            var PlainText = "username=" + pageViewer + "&pageOwner=" + pageViewer;//secure url
+            var EncryptionResult = cryptico.encrypt(PlainText, MattsPublicKeyString);
+            //var DecryptionResult = cryptico.decrypt(EncryptionResult.cipher, MattsRSAkey);
+            //console.log(DecryptionResult.plaintext);
+            var newRef = new Firebase("https://brouze.firebaseio.com/users");
+            //var classRef = usernameRef.child("skills");
+            newRef.child("keys").child("leaf").set({
+                public:MattsPublicKeyString,
+                private:MattsRSAkey,
+                message:EncryptionResult
+            });
+            
+            //console.log("public key: "+MattsPublicKeyString);//we will send matt's public key
+            //var PlainText = pageViewer;//the text we are sending is pageviewer
+            //var EncryptionResult = cryptico.encrypt(PlainText, MattsPublicKeyString);//this is how you encode btw
+            //console.log("result: "+EncryptionResult.cipher);//say the decoding
+            //var secret = EncryptionResult.cipher;//this is the encrypted text which we will send
+            
+           //this is the public key 
+//uXjrkGqe5WuS7zsTg6Z9DuS8cXLFz38ue+xrFzxrcQJCXtVccCoUFP2qH/AQ4qMvxxvqkSYBpRm1R5a4/NdQ5ei8sE8gfZEq7dlcR+gOSv3nnS4/CX1n5Z5m8bvFPF0lSZnYQ23xlyjXTaNacmV0IuZbqWd4j9LfdAKq5dvDaoE=
+            var secret = "username=" + pageViewer + "&pageOwner=" + pageViewer;
+            secret = btoa(secret);
+            //window.location.replace("help.html?" + secret);
+            window.location.href = "help.html?" + secret;
+            //window.location.replace("help.html");
+           // window.location.replace("help.html?" + "username=" + pageViewer + "&pageOwner=" + secret);
+        }
+        function searchFave(){
+            var ref = new Firebase("https://brouze.firebaseio.com/users/"+pageViewer+"/faves");
+            ref.once("value", function(snapshot) {
+              var favorite = snapshot.child(data).exists();
+             //return favorite;
+                if(favorite === true){
+                    
+                     console.log("this is not a saved tutor");
+                    $("#fave").text("");
+                    $("#fave").text("Remove from Favorites");
+                    $("#fave").attr("id", "unfave");//$("#unfave").hide();
+                   
+                }
+                else{
+                    
+                     console.log("this is already a saved tutor");
+                    //$("#fave").hide();
+                    $("#fave").text("");
+                    $("#fave").append('<span class="glyphicon glyphicon-star" aria-hidden="true"></span>Add to Favorites');
+                    $("#fave").attr("id", "fave");
+                   
+                }
+            });
+        }
+           /* $(function () {
+                 console.log("I bet ");
+                $("td").dblclick(function () {
+                    console.log("if i just " );
+                    var OriginalContent = $(this).text(); 
+                    $(this).addClass("cellEditing");
+                    $(this).html("<input type='text' value='" + OriginalContent + "' />"); 
+                    $(this).children().first().focus(); 
+                    $(this).children().first().keypress(function (e) { 
+                        if (e.which == 13) {
+                            var newContent = $(this).val(); 
+                            $(this).parent().text(newContent); 
+                            $(this).parent().removeClass("cellEditing");
+                        } 
+                    }); 
+                    $(this).children().first().blur(function(){ 
+                        $(this).parent().text(OriginalContent);
+                        $(this).parent().removeClass("cellEditing"); 
+                    });
+                }); 
+            });
+        $("td").on("click", "p.test", function(){
+            alert($(this).text());
+        });*/
+        $(document).on("click", "#canTutorTable td", function(e) {
+            theThingIs = $(this).closest("tr").attr('id')
+            var localMatch = false;
+            changes = true;
+            //console.log(theThingIs);
+            var bro = theThingIs.replace(/%20/g, " ")
+            console.log(bro);
+            if(bro==tempSub){
+                if(mode==0){
+                    localMatch = true;
+                }
+            }
+            if((editMode == true)&&(localMatch==true)){
+                var rowID = $(this).parent('tr').prevAll().length;
+                //$(this).closest("tr").index();
+                //console.log($(this).closest('tr').attr('id') + "x0x");
+                //console.log(rowID);
+                //tempBit is sub subject
+                //tempSub is subject
+                //console.log(this.id);
+                if((this.id != 'key') &&(this.id != 'AP')&&(this.id != 'trashButton')&&(this.id != 'penButton')){
+                    tempBit=this.id;
+                    var OriginalContent = $(this).text();
+                    //console.log(OriginalContent);
+                    //OriginalContent = OriginalContent.replace(/$/g,"")
+                    $(this).addClass("cellEditing");
+                    //$(this).parent().addClass("rowEditing");
+                    //console.log("edited cell");//new stuff starts here
+                    $(this).html("<input type='text' value='" + OriginalContent + "' />"); 
+                    $(this).children().first().focus();
+
+                    $(this).children().first().keypress(function (e) { 
+                        if (e.which == 13) { 
+                            var newContent = $(this).val(); 
+                            $(this).parent().text(newContent);
+                            //console.log("wassssup "+$(this).parent('tr').id);
+                            $(this).parent().removeClass("cellEditing"); 
+                            saveEdit(newContent,true);
+                            refreshTable();
+                            editMode = false;
+                            changes = false;
+                            $("#canTutorTable tr ").css('background-color', '#FFFFFF');
+                            $("#canTutorTable tr ").css('color', '#000000');
+                        } 
+                    });
+                    $(this).children().first().blur(function(){ 
+                        $(this).parent().text(OriginalContent); 
+                        $(this).parent().removeClass("cellEditing"); 
+                    });
+                }
+            }
+        });
+        $(document).on("click", "#cantTutorTable td", function(e) {
+            theThingIs = $(this).closest("tr").attr('id')
+            changes = true;
+            var localMatch = false;
+            //console.log(theThingIs);
+            var bro = theThingIs.replace(/%20/g, " ")
+            console.log(bro);
+            if(bro==tempSub){
+                if(mode==1){
+                    localMatch = true;
+                }
+            }
+            if((editMode == true)&&(localMatch==true)){
+                var rowID = $(this).parent('tr').prevAll().length;
+                //$(this).closest("tr").index();
+                //console.log($(this).closest('tr').attr('id') + "x0x");
+                //console.log(rowID);
+                //tempBit is sub subject
+                //tempSub is subject
+                //console.log(this.id);
+                if((this.id != 'key')&&(this.id != 'trashButton')&&(this.id != 'penButton')){
+                    tempBit=this.id;
+                    var OriginalContent = $(this).text();
+                    //console.log(OriginalContent);
+                    //OriginalContent = OriginalContent.replace(/$/g,"")
+                    $(this).addClass("cellEditing");
+                    //$(this).parent().addClass("rowEditing");
+                    //console.log("edited cell");//new stuff starts here
+                    $(this).html("<input type='text' value='" + OriginalContent + "' />"); 
+                    $(this).children().first().focus();
+                    tempContent=$(this).val();
+                    $(this).children().first().keypress(function (e) { 
+                        if (e.which == 13) { 
+                            var newContent = $(this).val(); 
+                            $(this).parent().text(newContent);
+                            console.log("wassssup "+$(this).parent('tr').id);
+                            $(this).parent().removeClass("cellEditing"); 
+                            saveEdit(newContent,false);
+                            refreshTableTwo();
+                            editMode = false;
+                            changes = false;
+                            $("#cantTutorTable tr ").css('background-color', '#FFFFFF');
+                            $("#cantTutorTable tr ").css('color', '#000000');
+                        } 
+                    });
+                    $(this).children().first().blur(function(){ 
+                        $(this).parent().text(OriginalContent); 
+                        $(this).parent().removeClass("cellEditing"); 
+                    });
+                }
+            }
+        });
+        function saveEdit(newContent,skill){
+            console.log("new stuff");
+            console.log("tempSub "+tempSub);
+            console.log("tempBit "+tempBit);
+            console.log("new content "+newContent);
+            if(skill == true){
+                var editRef = new Firebase("https://brouze.firebaseio.com/users/" + data + "/skills/"+tempSub);
+            }
+            else{
+                var editRef = new Firebase("https://brouze.firebaseio.com/users/" + data + "/weaknesses/"+tempSub);
+            }
+            editRef.child(tempBit).set(newContent);
+            console.log("hey what's the hold up");
+             //var hopperRef = usersRef.child("gracehop");
+            
+        }
+        function refreshTable(){
+            //$("#canTutorTable").empty();
+            for(var i = 0;i<rowData;i++){
+                $('#canTutorTable tr:last').remove();
+            }
+            rowData = 0;
+            addRow();
+        }
+        function refreshTableTwo(){
+            //$("#canTutorTable").empty();
+            for(var i = 0;i<rowDataTwo;i++){
+                $('#cantTutorTable tr:last').remove();
+            }
+            rowDataTwo = 0;
+            addRowTwo();
+        }
+    </script>
+
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
